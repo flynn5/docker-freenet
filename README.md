@@ -9,18 +9,18 @@ release files.
 Usage
 =====
 
-Just pull the image by tag:
+Pull the image by tag:
 
     docker pull flynn5/freenet
 
-Then download the docker-compose.yml file found in the [github repo](https://github.com/5nafu/docker-freenet), edit it
+Then download the docker-compose.yml file found in the [github repo](https://github.com/flynn5/docker-freenet), edit it
 to set the port and volume configuration the way you want it, then run it:
 
     docker-compose -f docker-compose.yml up -d
 
 Alternatively you can run the image directly:
 
-    docker run --name freenet -v $HOME/freenet/data:/data -v $HOME/freenet/config:/conf -p 127.0.0.1:8888:8888 -p 127.0.0.1:9481:9481 -p 12345:12345/udp -p 12346:12346/udp flynn5/freenet
+    docker run --name freenet -v $HOME/freenet/data:/data -v $HOME/freenet/config:/conf --net=host flynn5/freenet
 
 Afterward Freenet should be running, and you should be able to access fproxy on port
 8888, either on the local machine or by connecting to it through an ssh tunnel:
@@ -34,7 +34,13 @@ the `freenet.ini` or via the environment variable `allowedhosts`:
 
 If you use docker-compose, see the example in the attached `docker-compose.yml`.
 
-Freenet opens two UDP Ports for communication with the outside world. By default this image uses 12345 & 123456, which can be overwritten by setting
+(Note. By default, Freenet only allows access to fproxy at 8888 from localhost.  Hence if the container is run with port-mapping instead of host-mapping, i.e : replace --net=host and instead have:
+
+    docker run --name freenet -p 127.0.0.1:8888:8888 -p 127.0.0.1:9481:9481 -p 12345:12345/udp -p 12346:12346/udp  flynn5/freenet
+    
+or similar, this will result in freenet ignoring requests from dockerhost.  The reason being that running under port-mapping creates a distinct network address space for the image - distinct from dockerhost - and hence freenet no longer sees dockerhost as localhost.  Therefore best to use host-mapping at least for setup, where allowedhosts can be modified.)
+
+Freenet opens two UDP Ports for communication with the outside world. By default this image uses 12345 & 12346, which can be overwritten by setting
 the environment variables `darknetport` and `opennetport` to the desired port number (see above and in the `docker-compose.yml`).
 
 
