@@ -11,7 +11,7 @@ Usage
 
 Just pull the image by tag:
 
-    docker pull 5nafu/freenet
+    docker pull flynn5/freenet
 
 Then download the docker-compose.yml file found in the [github repo](https://github.com/5nafu/docker-freenet), edit it
 to set the port and volume configuration the way you want it, then run it:
@@ -20,7 +20,7 @@ to set the port and volume configuration the way you want it, then run it:
 
 Alternatively you can run the image directly:
 
-    docker run --name freenet -v $HOME/freenet/data:/data -v $HOME/freenet/config:/conf -p 127.0.0.1:8888:8888 -p 127.0.0.1:9481:9481 -p 12345:12345/udp -p 12346:12346/udp 5nafu/freenet
+    docker run --name freenet -v $HOME/freenet/data:/data -v $HOME/freenet/config:/conf -p 127.0.0.1:8888:8888 -p 127.0.0.1:9481:9481 -p 12345:12345/udp -p 12346:12346/udp flynn5/freenet
 
 Afterward Freenet should be running, and you should be able to access fproxy on port
 8888, either on the local machine or by connecting to it through an ssh tunnel:
